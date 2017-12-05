@@ -1,11 +1,13 @@
 package br.github.pedroguimaraes.controller;
 
+import br.github.pedroguimaraes.dao.Patientdao;
 import br.github.pedroguimaraes.dao.Persondao;
 import br.github.pedroguimaraes.model.Driver;
 import br.github.pedroguimaraes.model.Patient;
 import br.github.pedroguimaraes.model.Person;
 import br.github.pedroguimaraes.model.User;
 import java.util.Date;
+import java.util.List;
 
 public class PersonController {
     private Person person = new Person();
@@ -13,6 +15,7 @@ public class PersonController {
     private User user = new User();
     private Driver driver = new Driver();
     private Patient patient = new Patient();
+    private Patientdao patientdao = new Patientdao();
     
     
     public boolean addUser(String name, String bornDate, String rg, String cpf, String tel, String cel, String cep, String street, String number, String neighborhood, String city, String state, String country, String user, String pass) {
@@ -80,5 +83,11 @@ public class PersonController {
         if(this.persondao.persist(person))
             return true;
         return false;
+    }
+    
+    public List<Patient> getPatientByName(String patientName) {
+        if(!patientName.isEmpty())
+           return this.patientdao.getByName(patientName);
+        return null;
     }
 }

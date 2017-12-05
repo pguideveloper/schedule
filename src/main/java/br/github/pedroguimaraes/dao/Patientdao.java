@@ -22,6 +22,8 @@ public class Patientdao extends DAO<Patient>{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    
-    
+    public List<Patient> getByName(String patientName) {
+        return entityManager
+                .createQuery("FROM Patient as p WHERE p.person.name LIKE '%" + patientName + "%'").getResultList();
+    }    
 }

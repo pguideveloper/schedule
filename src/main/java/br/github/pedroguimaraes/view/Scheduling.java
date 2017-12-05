@@ -43,7 +43,6 @@ public class Scheduling extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        cboxPatients = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -76,13 +75,6 @@ public class Scheduling extends javax.swing.JFrame {
         setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        cboxPatients.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cboxPatients.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboxPatientsActionPerformed(evt);
-            }
-        });
 
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel2.setText("Paciente");
@@ -170,11 +162,12 @@ public class Scheduling extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnRemovePatient)
-                    .addComponent(btnAddPatient)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1)
-                        .addComponent(jLabel2)
-                        .addComponent(cboxPatients, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(btnAddPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(172, 172, 172))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -244,13 +237,11 @@ public class Scheduling extends javax.swing.JFrame {
                         .addGap(30, 30, 30))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cboxPatients, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAddPatient)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(3, 3, 3)
+                        .addComponent(btnAddPatient)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel9)
@@ -274,16 +265,22 @@ public class Scheduling extends javax.swing.JFrame {
                             .addComponent(txtCity, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addGap(50, 50, 50)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnRemovePatient)
-                            .addComponent(btnClearFields)
-                            .addComponent(btnAddSchedule))))
+                                .addGap(99, 99, 99)
+                                .addComponent(jLabel10))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnClearFields)
+                                    .addComponent(btnAddSchedule)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnRemovePatient)))))
                 .addContainerGap(131, Short.MAX_VALUE))
         );
 
@@ -324,18 +321,24 @@ public class Scheduling extends javax.swing.JFrame {
             patients.addElement(patient.getPerson().getName());
         }
         
-        this.cboxPatients.setModel(patients);
+        //this.cboxPatients.setModel(patients);
     }
     private void btnAddPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPatientActionPerformed
-        DefaultListModel model = new DefaultListModel();
         
-        this.patients.add((String)this.cboxPatients.getSelectedItem());
+        Patients patients = new Patients();
+        patients.setVisible(true);
+        patients.setSchedulingInterface(this);
         
-        for(int i = 0; i < this.patients.size(); i++){
-            model.addElement(this.patients.get(i));
-        }
         
-        this.cboxPatients.setModel((ComboBoxModel<String>) model);
+//        DefaultListModel model = new DefaultListModel();
+        
+        //this.patients.add((String)this.cboxPatients.getSelectedItem());
+        
+//        for(int i = 0; i < this.patients.size(); i++){
+//            model.addElement(this.patients.get(i));
+//        }
+        
+        //this.cboxPatients.setModel((ComboBoxModel<String>) model);
         
     }//GEN-LAST:event_btnAddPatientActionPerformed
 
@@ -358,10 +361,6 @@ public class Scheduling extends javax.swing.JFrame {
     private void cBoxExamsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxExamsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cBoxExamsActionPerformed
-
-    private void cboxPatientsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxPatientsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboxPatientsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -406,7 +405,6 @@ public class Scheduling extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cBoxDrivers;
     private javax.swing.JComboBox<String> cBoxExams;
     private javax.swing.JComboBox<String> cBoxVehicles;
-    private javax.swing.JComboBox<String> cboxPatients;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;

@@ -51,6 +51,7 @@ public class Home extends javax.swing.JFrame {
         menuDriver = new javax.swing.JMenuItem();
         menuVehicle = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        menuScheduling = new javax.swing.JMenuItem();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -126,6 +127,15 @@ public class Home extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Agendamento");
+
+        menuScheduling.setText("Agendar");
+        menuScheduling.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSchedulingActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuScheduling);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -178,6 +188,10 @@ public class Home extends javax.swing.JFrame {
     private void menuVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuVehicleActionPerformed
         new AddVehicle().setVisible(true);
     }//GEN-LAST:event_menuVehicleActionPerformed
+
+    private void menuSchedulingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSchedulingActionPerformed
+        new Scheduling().setVisible(true);
+    }//GEN-LAST:event_menuSchedulingActionPerformed
 
     public void setHomeHour(String hour) {
         this.lblHour.setText(hour);
@@ -235,6 +249,7 @@ public class Home extends javax.swing.JFrame {
     public javax.swing.JLabel lblHour;
     private javax.swing.JMenuItem menuDriver;
     private javax.swing.JMenuItem menuPatient;
+    private javax.swing.JMenuItem menuScheduling;
     private javax.swing.JMenuItem menuUser;
     private javax.swing.JMenuItem menuVehicle;
     // End of variables declaration//GEN-END:variables
