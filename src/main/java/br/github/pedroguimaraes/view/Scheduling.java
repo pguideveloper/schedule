@@ -6,7 +6,9 @@
 package br.github.pedroguimaraes.view;
 
 import br.github.pedroguimaraes.controller.SchedulingController;
+import br.github.pedroguimaraes.model.Driver;
 import br.github.pedroguimaraes.model.Patient;
+import br.github.pedroguimaraes.model.Vehicle;
 import java.awt.PopupMenu;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +25,15 @@ public class Scheduling extends javax.swing.JFrame {
 
     private SchedulingController schedulingController = new SchedulingController();
     List<String> patients = new ArrayList<String>();
+    List<String> drivers  = new ArrayList<String>();
     /**
      * Creates new form Scheduling
      */
     public Scheduling() {
         initComponents();
-       
-        initPatientsCombo();
+        
+        initDriverCombo();
+        initVehicleCombo();
          
     }
 
@@ -162,12 +166,12 @@ public class Scheduling extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnRemovePatient)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(btnAddPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(172, 172, 172))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnAddPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(126, 126, 126)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -314,15 +318,28 @@ public class Scheduling extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    private void initPatientsCombo() {
-        DefaultComboBoxModel patients = new DefaultComboBoxModel();
+    
+    
+    private void initDriverCombo() {
+        DefaultComboBoxModel drivers = new DefaultComboBoxModel();
         
-        for(Patient patient : this.schedulingController.getPatients()) {
-            patients.addElement(patient.getPerson().getName());
+        for(Driver driver : this.schedulingController.getDrivers()) {
+            drivers.addElement(driver.getPerson().getName());
         }
         
-        //this.cboxPatients.setModel(patients);
+        this.cBoxDrivers.setModel(drivers);
     }
+    
+    private void initVehicleCombo() {
+        DefaultComboBoxModel vehicles = new DefaultComboBoxModel();
+        
+        for(Vehicle vehicle : this.schedulingController.getVehicles()) {
+            vehicles.addElement(vehicle.getType());
+        }
+        
+        this.cBoxVehicles.setModel(vehicles);
+    }
+    
     private void btnAddPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPatientActionPerformed
         
         Patients patients = new Patients();
