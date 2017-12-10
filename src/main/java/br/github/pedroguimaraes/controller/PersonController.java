@@ -6,6 +6,8 @@ import br.github.pedroguimaraes.model.Driver;
 import br.github.pedroguimaraes.model.Patient;
 import br.github.pedroguimaraes.model.Person;
 import br.github.pedroguimaraes.model.User;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,18 +20,20 @@ public class PersonController {
     private Patientdao patientdao = new Patientdao();
     
     
-    public boolean addUser(String name, String bornDate, String rg, String cpf, String tel, String cel, String cep, String street, String number, String neighborhood, String city, String state, String country, String user, String pass) {
-    
+    public boolean addUser(String name, String bornDate, String rg, String cpf, String tel, String cel, String cep, String street, String number, String neighborhood, String city, String state, String country, String user, String pass) throws ParseException{
+     
         this.person.setName(name);
-        this.person.setBornDate(new Date(bornDate));
+        this.person.setBornDate(new SimpleDateFormat("dd/MM/yyyy").parse(bornDate));
         this.person.setRG(rg);
         this.person.setCPF(cpf);
         this.person.setTelephone(tel);
         this.person.setCelphone(cel);
+        this.person.setCep(cep);
         this.person.setStreet(street);
         this.person.setNumber(number);
         this.person.setNeighborhood(neighborhood);
         this.person.setCity(city);
+        this.person.setState(state);
         this.person.setCountry(country);
         this.user.setUserName(user);
         this.user.setUserPass(pass);
@@ -42,17 +46,19 @@ public class PersonController {
         
     }
     
-    public boolean addPatient(String name, String bornDate, String rg, String cpf, String tel, String cel, String cep, String street, String number, String neighborhood, String city, String state, String country, String susCard) {
+    public boolean addPatient(String name, String bornDate, String rg, String cpf, String tel, String cel, String cep, String street, String number, String neighborhood, String city, String state, String country, String susCard) throws ParseException {
         this.person.setName(name);
-        this.person.setBornDate(new Date(bornDate));
+        this.person.setBornDate(new SimpleDateFormat("dd/MM/yyyy").parse(bornDate));
         this.person.setRG(rg);
         this.person.setCPF(cpf);
         this.person.setTelephone(tel);
         this.person.setCelphone(cel);
+        this.person.setCep(cep);
         this.person.setStreet(street);
         this.person.setNumber(number);
         this.person.setNeighborhood(neighborhood);
         this.person.setCity(city);
+        this.person.setState(state);
         this.person.setCountry(country);
         this.patient.setSusCard(susCard);
         this.person.setPatient(this.patient);
@@ -63,17 +69,19 @@ public class PersonController {
         return false;
     }
     
-    public boolean addDriver(String name, String bornDate, String rg, String cpf, String tel, String cel, String cep, String street, String number, String neighborhood, String city, String state, String country, String driverLicense, String expTime) {
+    public boolean addDriver(String name, String bornDate, String rg, String cpf, String tel, String cel, String cep, String street, String number, String neighborhood, String city, String state, String country, String driverLicense, String expTime) throws ParseException {
         this.person.setName(name);
-        this.person.setBornDate(new Date(bornDate));
+        this.person.setBornDate(new SimpleDateFormat("dd/MM/yyyy").parse(bornDate));
         this.person.setRG(rg);
         this.person.setCPF(cpf);
         this.person.setTelephone(tel);
         this.person.setCelphone(cel);
+        this.person.setCep(cep);
         this.person.setStreet(street);
         this.person.setNumber(number);
         this.person.setNeighborhood(neighborhood);
         this.person.setCity(city);
+        this.person.setState(state);
         this.person.setCountry(country);
         this.driver.setDriverLicense(driverLicense);
         this.driver.setExperience(expTime);

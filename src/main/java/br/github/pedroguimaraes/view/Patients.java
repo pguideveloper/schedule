@@ -10,6 +10,8 @@ import br.github.pedroguimaraes.model.Patient;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,7 +23,10 @@ public class Patients extends javax.swing.JFrame {
     Scheduling schedule;
     List<Patient> patients = new ArrayList<Patient>();
     PersonController personcontroller = new PersonController();
-    
+    List<Patient> selectedPatients = new ArrayList<Patient>();
+    Patient selectedPatient = new Patient();
+    List<Patient> results = new ArrayList<Patient>();
+
     /**
      * Creates new form Patient
      */
@@ -29,7 +34,7 @@ public class Patients extends javax.swing.JFrame {
         initComponents();
         this.ListAutoComplete.setVisible(false);
     }
-    
+
     public void setSchedulingInterface(Scheduling schedule) {
         this.schedule = schedule;
     }
@@ -51,7 +56,7 @@ public class Patients extends javax.swing.JFrame {
         btnEndSearch = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         ListAutoComplete = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
+        btnAddPatients = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -85,10 +90,10 @@ public class Patients extends javax.swing.JFrame {
         ListAutoComplete.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane2.setViewportView(ListAutoComplete);
 
-        jButton1.setText("Adicionar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAddPatients.setText("Adicionar");
+        btnAddPatients.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAddPatientsActionPerformed(evt);
             }
         });
 
@@ -115,7 +120,7 @@ public class Patients extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton1)))
+                                        .addComponent(btnAddPatients)))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(18, 18, 18))
         );
@@ -134,7 +139,7 @@ public class Patients extends javax.swing.JFrame {
                                 .addComponent(txtName)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1))
+                    .addComponent(btnAddPatients))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -147,30 +152,53 @@ public class Patients extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEndSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEndSearchActionPerformed
-        
+        UIManager.put("OptionPane.yesButtonText", "Sim");
+        UIManager.put("OptionPane.noButtonText", "Não");
+        UIManager.put("OptionPane.cancelButtonText", "Cancelar");
+
+        if (!this.selectedPatients.isEmpty()) {
+            this.schedule.setSelectedPatients(this.selectedPatients);
+            this.dispose();
+        } else {
+            switch (JOptionPane.showConfirmDialog(null, "Nenhum paciente selecionado, deseja cancelar a busca?")) {
+                case 0:
+                    this.dispose();
+                    break;
+            }
+        }
     }//GEN-LAST:event_btnEndSearchActionPerformed
 
     private void btnSearchPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchPatientActionPerformed
         DefaultListModel model = new DefaultListModel();
-        for(Patient patient : this.personcontroller.getPatientByName(this.txtName.getText())) {
-            this.ListAutoComplete.setModel(model);
+        this.ListAutoComplete.setModel(model);
+        this.results = this.personcontroller.getPatientByName(this.txtName.getText());
+
+        for (Patient patient : results) {
             model.addElement(patient.getPerson().getName());
         }
+
         this.ListAutoComplete.setVisible(true);
     }//GEN-LAST:event_btnSearchPatientActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnAddPatientsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPatientsActionPerformed
         DefaultTableModel model = (DefaultTableModel) this.tblPatients.getModel();
-        
-        String patient = this.ListAutoComplete.getSelectedValue();
-        
-        model.addRow(new String[]{patient});
-        
-        this.tblPatients.setModel(model);
-    }//GEN-LAST:event_jButton1ActionPerformed
 
-    
-   
+        int index = ListAutoComplete.getSelectedIndex();
+        this.selectedPatients.add(this.results.get(index));
+
+        model.setNumRows(0);
+        for (int i = 0; i < this.selectedPatients.size(); i++) {
+            model.addRow(new String[]{
+                this.selectedPatients.get(i).getPerson().getName(),
+                this.selectedPatients.get(i).getPerson().getCPF(),
+                this.selectedPatients.get(i).getSusCard(),
+                this.selectedPatients.get(i).getPerson().getTelephone() + " / " + this.selectedPatients.get(index).getPerson().getCelphone()
+            });
+        }
+
+        this.tblPatients.setModel(model);
+    }//GEN-LAST:event_btnAddPatientsActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -206,9 +234,9 @@ public class Patients extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> ListAutoComplete;
+    private javax.swing.JButton btnAddPatients;
     private javax.swing.JButton btnEndSearch;
     private javax.swing.JButton btnSearchPatient;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

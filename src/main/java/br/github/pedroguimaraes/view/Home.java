@@ -39,6 +39,7 @@ public class Home extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jMenuItem1 = new javax.swing.JMenuItem();
         lblHour = new javax.swing.JLabel();
         lblDate = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -50,6 +51,7 @@ public class Home extends javax.swing.JFrame {
         menuPatient = new javax.swing.JMenuItem();
         menuDriver = new javax.swing.JMenuItem();
         menuVehicle = new javax.swing.JMenuItem();
+        menuExam = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuScheduling = new javax.swing.JMenuItem();
 
@@ -66,6 +68,8 @@ public class Home extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jMenuItem1.setText("jMenuItem1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Schedule v1.0");
         setResizable(false);
@@ -78,14 +82,14 @@ public class Home extends javax.swing.JFrame {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Exame", "Motorista", "Carro", "Destino", "Data"
             }
         ));
         jScrollPane2.setViewportView(jTable2);
@@ -124,6 +128,14 @@ public class Home extends javax.swing.JFrame {
         });
         jMenu1.add(menuVehicle);
 
+        menuExam.setText("Exames");
+        menuExam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuExamActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuExam);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Agendamento");
@@ -150,7 +162,7 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 622, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 875, Short.MAX_VALUE)
                         .addComponent(lblDate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblHour)))
@@ -164,8 +176,8 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(lblHour)
                     .addComponent(lblDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3))
-                .addGap(35, 35, 35)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(109, 109, 109)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -192,6 +204,10 @@ public class Home extends javax.swing.JFrame {
     private void menuSchedulingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSchedulingActionPerformed
         new Scheduling().setVisible(true);
     }//GEN-LAST:event_menuSchedulingActionPerformed
+
+    private void menuExamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExamActionPerformed
+        new AddExam().setVisible(true);
+    }//GEN-LAST:event_menuExamActionPerformed
 
     public void setHomeHour(String hour) {
         this.lblHour.setText(hour);
@@ -241,6 +257,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
@@ -248,6 +265,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel lblDate;
     public javax.swing.JLabel lblHour;
     private javax.swing.JMenuItem menuDriver;
+    private javax.swing.JMenuItem menuExam;
     private javax.swing.JMenuItem menuPatient;
     private javax.swing.JMenuItem menuScheduling;
     private javax.swing.JMenuItem menuUser;

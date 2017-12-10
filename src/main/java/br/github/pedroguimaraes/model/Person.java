@@ -28,7 +28,7 @@ public class Person implements Serializable {
     private String name; 
     
     @Column
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date bornDate; 
     
     @Column

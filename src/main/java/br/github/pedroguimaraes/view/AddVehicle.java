@@ -134,18 +134,17 @@ public class AddVehicle extends javax.swing.JFrame {
                         .addComponent(txtType, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(33, 33, 33))
                     .addComponent(txtBrand, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(33, 33, 33))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnAddVehicle)
-                            .addComponent(btnClearFields))))
+                            .addComponent(btnClearFields))
+                        .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
+                        .addGap(33, 33, 33)))
                 .addContainerGap(55, Short.MAX_VALUE))
         );
 
@@ -188,7 +187,7 @@ public class AddVehicle extends javax.swing.JFrame {
         String year         = this.txtYear.getText();
         
         if(this.vehicleController.addVehicle(type, seatsNum, licensePlate, brand, year)){
-            JOptionPane.showConfirmDialog(null, "Veículo: " + type + " cadastrado com sucesso!");
+            JOptionPane.showMessageDialog(null, "Veículo: " + type + " cadastrado com sucesso!");
             this.dispose();
         }else{
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar veículo.");
