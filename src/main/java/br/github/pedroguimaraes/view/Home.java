@@ -5,9 +5,17 @@
  */
 package br.github.pedroguimaraes.view;
 
+import br.github.pedroguimaraes.controller.SchedulingController;
+import br.github.pedroguimaraes.model.Scheduling;
 import br.github.pedroguimaraes.helper.HomeClock;
+import br.github.pedroguimaraes.model.Patient;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,10 +24,14 @@ import java.util.logging.Logger;
 public class Home extends javax.swing.JFrame {
 
     Home home = this;
+    SchedulingController schedulingController = new SchedulingController();
+    List<Scheduling> schedules = new ArrayList<Scheduling>();
     
     public Home() {
         initComponents();
         final HomeClock homeClock = new HomeClock();
+        this.initSchedulingTable();
+        
         
         new Thread() {
             public void run() {
@@ -44,7 +56,8 @@ public class Home extends javax.swing.JFrame {
         lblDate = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblScheduling = new javax.swing.JTable();
+        btnDetails = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuUser = new javax.swing.JMenuItem();
@@ -80,7 +93,7 @@ public class Home extends javax.swing.JFrame {
 
         jLabel3.setText("Olá, fulano");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblScheduling.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -92,7 +105,19 @@ public class Home extends javax.swing.JFrame {
                 "Exame", "Motorista", "Carro", "Destino", "Data"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        tblScheduling.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblSchedulingMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblScheduling);
+
+        btnDetails.setText("Ver detalhes");
+        btnDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDetailsActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("Cadastrar");
 
@@ -165,7 +190,10 @@ public class Home extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 875, Short.MAX_VALUE)
                         .addComponent(lblDate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblHour)))
+                        .addComponent(lblHour))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnDetails)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -176,7 +204,9 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(lblHour)
                     .addComponent(lblDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3))
-                .addGap(109, 109, 109)
+                .addGap(78, 78, 78)
+                .addComponent(btnDetails)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -185,6 +215,25 @@ public class Home extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void initSchedulingTable() {
+        this.btnDetails.setVisible(false);
+        DefaultTableModel model = (DefaultTableModel) this.tblScheduling.getModel();
+        
+        this.schedules = this.schedulingController.getSchedules();
+        
+        model.setNumRows(0);
+        for (Scheduling scheduling : this.schedules) {
+            model.addRow(new String[]{
+                scheduling.getExam().getName(),
+                scheduling.getDriver().getPerson().getName(),
+                scheduling.getVehicle().getType(),
+                scheduling.getAddress() + ", " + scheduling.getNumber() + ", " + scheduling.getNeighborhood() + " - " + scheduling.getState(),
+                new SimpleDateFormat("dd/MM/yyyy").format(scheduling.getScheduleTime())
+            });
+        }
+
+        this.tblScheduling.setModel(model);
+    }
     private void menuPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPatientActionPerformed
         new AddPatient().setVisible(true);
     }//GEN-LAST:event_menuPatientActionPerformed
@@ -202,12 +251,31 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_menuVehicleActionPerformed
 
     private void menuSchedulingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSchedulingActionPerformed
-        new Scheduling().setVisible(true);
+        br.github.pedroguimaraes.view.Scheduling schedulingScreen = new br.github.pedroguimaraes.view.Scheduling();
+        schedulingScreen.setHomeScreen(this);
+        schedulingScreen.setVisible(true);
     }//GEN-LAST:event_menuSchedulingActionPerformed
 
     private void menuExamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExamActionPerformed
         new AddExam().setVisible(true);
     }//GEN-LAST:event_menuExamActionPerformed
+
+    private void btnDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailsActionPerformed
+        Scheduling scheduling = this.schedules.get(this.tblScheduling.getSelectedRow());
+        
+        if(scheduling != null){
+            PatientDetails patientDetailsScreen = new PatientDetails();
+            patientDetailsScreen.setSchedulingData(scheduling);
+            patientDetailsScreen.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(null, "Selecione a linha e clique em 'Ver detalhes'.");
+        }
+        
+    }//GEN-LAST:event_btnDetailsActionPerformed
+
+    private void tblSchedulingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSchedulingMouseClicked
+        this.btnDetails.setVisible(true);
+    }//GEN-LAST:event_tblSchedulingMouseClicked
 
     public void setHomeHour(String hour) {
         this.lblHour.setText(hour);
@@ -253,6 +321,7 @@ public class Home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDetails;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -261,7 +330,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblDate;
     public javax.swing.JLabel lblHour;
     private javax.swing.JMenuItem menuDriver;
@@ -270,5 +338,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuScheduling;
     private javax.swing.JMenuItem menuUser;
     private javax.swing.JMenuItem menuVehicle;
+    private javax.swing.JTable tblScheduling;
     // End of variables declaration//GEN-END:variables
 }

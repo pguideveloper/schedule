@@ -13,12 +13,12 @@ public class Patientdao extends DAO<Patient>{
     }
 
     @Override
-    public Patient getById(Long id) {
+    public Patient getById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean removeById(Long id) {
+    public boolean removeById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

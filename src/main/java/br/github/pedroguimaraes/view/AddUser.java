@@ -9,6 +9,7 @@ import br.github.pedroguimaraes.controller.PersonController;
 import com.github.gilbertotorrezan.viacep.se.ViaCEPClient;
 import com.github.gilbertotorrezan.viacep.shared.ViaCEPEndereco;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -424,26 +425,30 @@ public class AddUser extends javax.swing.JFrame {
         String user     = this.txtUser.getText();
         String pass     = this.txtPass.getText();
 
-        if(this.personcontroller.addUser(name, bornDate, rg, cpf, tel, cel, cep, street, number, neighb, city, state, country, user, pass)){
-            this.txtName.setText("");
-            this.txtBornDate.setText("");
-            this.txtRg.setText("");
-            this.txtCpf.setText("");
-            this.txtTel.setText("");
-            this.txtCel.setText("");
-            this.txtCep.setText("");
-            this.txtStreet.setText("");
-            this.txtNeighb.setText("");
-            this.txtCity.setText("");
-            this.txtState.setText("");
-            this.txtCountry.setText("");
-            this.txtUser.setText("");
-            this.txtPass.setText("");
-
-            JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso!");
-            this.dispose();
-        }else {
-            JOptionPane.showMessageDialog(null, "Erro ao cadastrar o usuário!");
+        try {
+            if(this.personcontroller.addUser(name, bornDate, rg, cpf, tel, cel, cep, street, number, neighb, city, state, country, user, pass)){
+                this.txtName.setText("");
+                this.txtBornDate.setText("");
+                this.txtRg.setText("");
+                this.txtCpf.setText("");
+                this.txtTel.setText("");
+                this.txtCel.setText("");
+                this.txtCep.setText("");
+                this.txtStreet.setText("");
+                this.txtNeighb.setText("");
+                this.txtCity.setText("");
+                this.txtState.setText("");
+                this.txtCountry.setText("");
+                this.txtUser.setText("");
+                this.txtPass.setText("");
+                
+                JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso!");
+                this.dispose();
+            }else {
+                JOptionPane.showMessageDialog(null, "Erro ao cadastrar o usuário!");
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(AddUser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAddUserActionPerformed
 

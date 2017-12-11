@@ -14,6 +14,7 @@ import com.github.gilbertotorrezan.viacep.se.ViaCEPClient;
 import com.github.gilbertotorrezan.viacep.shared.ViaCEPEndereco;
 import java.awt.PopupMenu;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -30,6 +31,7 @@ import javax.swing.JOptionPane;
  */
 public class Scheduling extends javax.swing.JFrame {
 
+    private Home home;
     private SchedulingController schedulingController = new SchedulingController();
     List<String> patients = new ArrayList<String>();
     List<String> drivers  = new ArrayList<String>();
@@ -49,6 +51,10 @@ public class Scheduling extends javax.swing.JFrame {
         initVehicleCombo();
         initExamCombo();
          
+    }
+    
+    public void setHomeScreen(Home home) {
+        this.home = home;
     }
 
     /**
@@ -511,11 +517,16 @@ public class Scheduling extends javax.swing.JFrame {
         Driver driver   = this.insertDrivers.get(this.cBoxDrivers.getSelectedIndex());
         Exam exam       = this.insertExams.get(this.cBoxExams.getSelectedIndex());
         Vehicle vehicle = this.insertVehicles.get(this.cBoxVehicles.getSelectedIndex());
-        if(this.schedulingController.addSchedule(this.selectedPatients, exam, driver, vehicle, date, dateC, cep, address, number, neighb, city, state, country)) {
-            JOptionPane.showMessageDialog(null, "Agendamento realizado com sucesso!");
-            this.dispose();
-        }else {
-            JOptionPane.showMessageDialog(null, "Erro ao gerar o agendamento.");
+        try {
+            if(this.schedulingController.addSchedule(this.selectedPatients, exam, driver, vehicle, date, dateC, cep, address, number, neighb, city, state, country)) {
+                JOptionPane.showMessageDialog(null, "Agendamento realizado com sucesso!");
+                this.home.initSchedulingTable();
+                this.dispose();
+            }else {
+                JOptionPane.showMessageDialog(null, "Erro ao gerar o agendamento.");
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(Scheduling.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_btnAddScheduleActionPerformed

@@ -9,6 +9,7 @@ import br.github.pedroguimaraes.controller.PersonController;
 import com.github.gilbertotorrezan.viacep.se.ViaCEPClient;
 import com.github.gilbertotorrezan.viacep.shared.ViaCEPEndereco;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -441,11 +442,15 @@ public class AddPatient extends javax.swing.JFrame {
         String country  = this.txtCountry.getText();
         String susCard  = this.txtSusCard.getText();
         
-        if(this.personController.addPatient(name, bornDate, rg, cpf, tel, cel, cep, street, number, neighb, city, state, country, susCard)) {
-            JOptionPane.showMessageDialog(null, "Paciente: " + name + ". cadastrado com sucesso!");
-            this.dispose();
-        }else {
-            JOptionPane.showMessageDialog(null, "Erro ao cadastrar paciente!");
+        try {
+            if(this.personController.addPatient(name, bornDate, rg, cpf, tel, cel, cep, street, number, neighb, city, state, country, susCard)) {
+                JOptionPane.showMessageDialog(null, "Paciente: " + name + ". cadastrado com sucesso!");
+                this.dispose();
+            }else {
+                JOptionPane.showMessageDialog(null, "Erro ao cadastrar paciente!");
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(AddPatient.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         

@@ -12,12 +12,12 @@ public class Persondao extends DAO<Person>{
     }
 
     @Override
-    public Person getById(Long id) {
+    public Person getById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean removeById(Long id) {
+    public boolean removeById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

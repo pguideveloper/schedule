@@ -9,6 +9,7 @@ import br.github.pedroguimaraes.controller.PersonController;
 import com.github.gilbertotorrezan.viacep.se.ViaCEPClient;
 import com.github.gilbertotorrezan.viacep.shared.ViaCEPEndereco;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -383,12 +384,16 @@ public class AddDriver extends javax.swing.JFrame {
         String driverLicense    = this.txtDriveLicense.getText();
         String expTime          = this.txtExpTime.getText();
         
-        if(this.personController.addDriver(name, bornDate, rg, cpf, tel, cel, cep, street, number, neighb, city, state, country, driverLicense, expTime)) {
-            JOptionPane.showMessageDialog(null, "Motorista: " + name + ". cadastrado com sucesso.");
-            this.dispose();
-            
-        }else {
-            JOptionPane.showMessageDialog(null, "Erro ao cadastrar motorista");
+        try {
+            if(this.personController.addDriver(name, bornDate, rg, cpf, tel, cel, cep, street, number, neighb, city, state, country, driverLicense, expTime)) {
+                JOptionPane.showMessageDialog(null, "Motorista: " + name + ". cadastrado com sucesso.");
+                this.dispose();
+                
+            }else {
+                JOptionPane.showMessageDialog(null, "Erro ao cadastrar motorista");
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(AddDriver.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_btnAddDriverActionPerformed

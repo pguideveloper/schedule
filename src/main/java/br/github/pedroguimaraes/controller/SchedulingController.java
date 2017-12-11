@@ -68,4 +68,8 @@ public class SchedulingController {
         return false;
     }
 
+    public List<Scheduling> getSchedules() {
+        return this.schedulingdao.findAll();
+    }
+    
 }
