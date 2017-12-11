@@ -72,4 +72,12 @@ public class SchedulingController {
         return this.schedulingdao.findAll();
     }
     
+    public void removeSchedule(Scheduling scheduling) {
+        this.schedulingdao.remove(scheduling);
+    }
+    
+    public List<Scheduling> search(String exam, String driver, String date) {
+        return this.schedulingdao.search(exam, driver, date);
+    }
+    
 }

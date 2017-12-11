@@ -7,6 +7,7 @@ package br.github.pedroguimaraes.controller;
 
 import br.github.pedroguimaraes.dao.Examdao;
 import br.github.pedroguimaraes.model.Exam;
+import java.util.List;
 
 /**
  *
@@ -25,5 +26,9 @@ public class ExamController {
             return true; 
         else
             return false; 
+    }
+    
+    public List<Exam> getExams() {
+        return this.examdao.findAll();
     }
 }

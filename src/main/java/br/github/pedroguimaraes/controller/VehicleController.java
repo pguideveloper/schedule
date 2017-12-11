@@ -7,6 +7,7 @@ package br.github.pedroguimaraes.controller;
 
 import br.github.pedroguimaraes.dao.Vehicledao;
 import br.github.pedroguimaraes.model.Vehicle;
+import java.util.List;
 
 public class VehicleController {
     private final Vehicle vehicle = new Vehicle();
@@ -23,6 +24,10 @@ public class VehicleController {
         if(this.vehicledao.persist(vehicle))
             return true;
         return false;
+    }
+    
+    public List<Vehicle> getVehicles() {
+        return this.vehicledao.findAll();
     }
     
 }

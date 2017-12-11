@@ -19,6 +19,14 @@ public class PersonController {
     private Patient patient = new Patient();
     private Patientdao patientdao = new Patientdao();
     
+    public String login(String login, String password) {
+        String nome = this.persondao.login(login, password).get(0).getPerson().getName();
+        
+        if(nome != null)
+            return nome;
+        else
+            return null;
+    }
     
     public boolean addUser(String name, String bornDate, String rg, String cpf, String tel, String cel, String cep, String street, String number, String neighborhood, String city, String state, String country, String user, String pass) throws ParseException{
      

@@ -1,7 +1,9 @@
 package br.github.pedroguimaraes.dao;
 
 import br.github.pedroguimaraes.model.Person;
+import br.github.pedroguimaraes.model.User;
 import java.util.List;
+import javax.persistence.Query;
 
 
 public class Persondao extends DAO<Person>{
@@ -37,6 +39,22 @@ public class Persondao extends DAO<Person>{
         
         return result;
         
+    }
+    
+    public List<User> login(String login, String pass) {
+        try{
+            this.entityManager.getTransaction().begin();
+            Query result = this.entityManager.createQuery("From User where userName = ?1 and userPass = ?2");
+            result.setParameter(1, login);
+            result.setParameter(2, pass);
+         
+            this.entityManager.getTransaction().commit();
+            return result.getResultList();
+        }catch(Exception ex) {
+            ex.printStackTrace();
+            this.entityManager.getTransaction().rollback();
+            return null;
+        }
     }
     
 }

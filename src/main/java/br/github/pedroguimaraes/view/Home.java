@@ -5,15 +5,23 @@
  */
 package br.github.pedroguimaraes.view;
 
+import br.github.pedroguimaraes.controller.DriverController;
+import br.github.pedroguimaraes.controller.ExamController;
 import br.github.pedroguimaraes.controller.SchedulingController;
+import br.github.pedroguimaraes.controller.VehicleController;
 import br.github.pedroguimaraes.model.Scheduling;
 import br.github.pedroguimaraes.helper.HomeClock;
+import br.github.pedroguimaraes.model.Driver;
+import br.github.pedroguimaraes.model.Exam;
 import br.github.pedroguimaraes.model.Patient;
+import br.github.pedroguimaraes.model.Vehicle;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,23 +33,28 @@ public class Home extends javax.swing.JFrame {
 
     Home home = this;
     SchedulingController schedulingController = new SchedulingController();
+    ExamController examController = new ExamController();
+    DriverController driverController = new DriverController();
+    VehicleController vehicleController = new VehicleController();
+
     List<Scheduling> schedules = new ArrayList<Scheduling>();
-    
+    List<Exam> exams = new ArrayList<Exam>();
+    List<Driver> drivers = new ArrayList<Driver>();
+
     public Home() {
         initComponents();
         final HomeClock homeClock = new HomeClock();
         this.initSchedulingTable();
-        
-        
+
         new Thread() {
             public void run() {
-                
-                while(true) {
+
+                while (true) {
                     home.lblHour.setText(homeClock.getHour());
                 }
             }
         }.start();
-        
+
         this.lblDate.setText(homeClock.getDate());
     }
 
@@ -54,10 +67,11 @@ public class Home extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         lblHour = new javax.swing.JLabel();
         lblDate = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblScheduling = new javax.swing.JTable();
         btnDetails = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuUser = new javax.swing.JMenuItem();
@@ -87,11 +101,12 @@ public class Home extends javax.swing.JFrame {
         setTitle("Schedule v1.0");
         setResizable(false);
 
-        lblHour.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblHour.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
-        lblDate.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblDate.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
-        jLabel3.setText("Olá, fulano");
+        lblName.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        lblName.setText("Olá, fulano");
 
         tblScheduling.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -116,6 +131,13 @@ public class Home extends javax.swing.JFrame {
         btnDetails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDetailsActionPerformed(evt);
+            }
+        });
+
+        btnRemove.setText("Remover agendamento");
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
             }
         });
 
@@ -184,30 +206,39 @@ public class Home extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 973, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 875, Short.MAX_VALUE)
-                        .addComponent(lblDate)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblHour))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnDetails)))
+                        .addComponent(btnDetails)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRemove)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(lblName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblDate)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblHour)
+                .addGap(41, 41, 41))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(lblName))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblDate, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblHour)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblHour)
-                    .addComponent(lblDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3))
-                .addGap(78, 78, 78)
-                .addComponent(btnDetails)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDetails)
+                    .addComponent(btnRemove))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -215,12 +246,19 @@ public class Home extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+   
+    public void setName(String name) {
+        this.lblName.setText("Olá, " + name);
+    }
+
     public void initSchedulingTable() {
         this.btnDetails.setVisible(false);
+        this.btnRemove.setVisible(false);
+
         DefaultTableModel model = (DefaultTableModel) this.tblScheduling.getModel();
-        
+
         this.schedules = this.schedulingController.getSchedules();
-        
+
         model.setNumRows(0);
         for (Scheduling scheduling : this.schedules) {
             model.addRow(new String[]{
@@ -262,20 +300,26 @@ public class Home extends javax.swing.JFrame {
 
     private void btnDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailsActionPerformed
         Scheduling scheduling = this.schedules.get(this.tblScheduling.getSelectedRow());
-        
-        if(scheduling != null){
+
+        if (scheduling != null) {
             PatientDetails patientDetailsScreen = new PatientDetails();
             patientDetailsScreen.setSchedulingData(scheduling);
             patientDetailsScreen.setVisible(true);
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Selecione a linha e clique em 'Ver detalhes'.");
         }
-        
+
     }//GEN-LAST:event_btnDetailsActionPerformed
 
     private void tblSchedulingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSchedulingMouseClicked
         this.btnDetails.setVisible(true);
+        this.btnRemove.setVisible(true);
     }//GEN-LAST:event_tblSchedulingMouseClicked
+
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        this.schedulingController.removeSchedule(this.schedules.get(this.tblScheduling.getSelectedRow()));
+        this.initSchedulingTable();
+    }//GEN-LAST:event_btnRemoveActionPerformed
 
     public void setHomeHour(String hour) {
         this.lblHour.setText(hour);
@@ -322,7 +366,7 @@ public class Home extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDetails;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JButton btnRemove;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -332,6 +376,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblDate;
     public javax.swing.JLabel lblHour;
+    private javax.swing.JLabel lblName;
     private javax.swing.JMenuItem menuDriver;
     private javax.swing.JMenuItem menuExam;
     private javax.swing.JMenuItem menuPatient;
